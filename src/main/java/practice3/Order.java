@@ -16,17 +16,17 @@ public class Order {
     }
 
     public BigDecimal calculate() {
-        BigDecimal grandTotal;
-        grandTotal = calculateTotal();
-        grandTotal = grandTotal.subtract(calculateDiscount());
-        grandTotal = grandTotal.add(grandTotal.multiply(tax));
-        return grandTotal;
+        BigDecimal total;
+        total = calculateTotal();
+        total = total.subtract(calculateDiscount());
+        total = total.add(total.multiply(tax));
+        return total;
     }
 
     private BigDecimal calculateDiscount() {
         BigDecimal reducedPrice = new BigDecimal(0);
         for (BigDecimal discount : discounts) {
-            reducedPrice = reducedPrice.subtract(discount);
+            reducedPrice = reducedPrice.add(discount);
         }
         return reducedPrice;
     }
