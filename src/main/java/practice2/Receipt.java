@@ -5,14 +5,14 @@ import java.util.List;
 
 public class Receipt {
 
+    private BigDecimal tax;
+
     public Receipt() {
         tax = new BigDecimal(0.1);
         tax = tax.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
-    private BigDecimal tax;
-
-    public double CalculateGrandTotal(List<Product> products, List<OrderItem> items) {
+    public double calculateGrandTotal(List<Product> products, List<OrderItem> items) {
         BigDecimal subTotal = calculateSubtotal(products, items);
 
         for (Product product : products) {
@@ -32,14 +32,7 @@ public class Receipt {
 
 
     private OrderItem findOrderItemByProduct(List<OrderItem> items, Product product) {
-        OrderItem curItem = null;
-        for (OrderItem item : items) {
-            if (item.getCode() == product.getCode()) {
-                curItem = item;
-                break;
-            }
-        }
-        return curItem;
+        return items.stream().filter(item -> item.getCode() == product.getCode()).findFirst().orElse(null);
     }
 
     private BigDecimal calculateSubtotal(List<Product> products, List<OrderItem> items) {
