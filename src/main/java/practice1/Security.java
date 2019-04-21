@@ -11,28 +11,28 @@ public class Security {
     }
 
     public boolean hasAccess(User user, Permission permission, ImmutableList<Permission> permissions) {
-
-        boolean isAccess = false;
-        if (user == null) {
-            return isAccess;
+        if (isEmpty(user, permission, permissions)) {
+            return false;
         }
+        return isLegalIdentity(user, permission, permissions);
+    }
 
-        if (permission == null) {
-            return isAccess;
-        }
-
-        if (permissions.size() == 0) {
-            return isAccess;
-        }
-
+    private boolean isLegalIdentity(User user, Permission permission, ImmutableList<Permission> permissions) {
+        boolean identity = false;
         if (securityChecker.isAdmin()) {
-            isAccess = true;
+            identity = true;
         }
 
-        if (this.securityChecker.checkPermission(user, permission) || permissions.contains(permission)) {
-            isAccess = true;
+        if (securityChecker.checkPermission(user, permission) || permissions.contains(permission)) {
+            identity = true;
         }
+        return identity;
+    }
 
-        return isAccess;
+    private boolean isEmpty(User user, Permission permission, ImmutableList<Permission> permissions) {
+        if (user == null || permission == null || permissions.size() == 0) {
+            return true;
+        }
+        return false;
     }
 }
